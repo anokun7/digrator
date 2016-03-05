@@ -39,7 +39,7 @@ createNameSpaces() {
   IFS=
   cat /var/tmp/dest_accounts | sort -u | while IFS= read -r i;
     do
-      curl --insecure --user admin:Admin123 -X POST --header "Content-Type: application/json" --header "Accept: application/json" --header "X-Csrf-Token: lCag0CgWAlVzYuTNCinQbbDYqvfo2b6-W1zpvyY52S0="  -d "$i" https://"$DEST_DTR_DOMAIN"/api/v0/accounts
+      curl --insecure --user "$DEST_DTR_ADMIN":"$DEST_DTR_PASSWORD" -X POST --header "Content-Type: application/json" --header "Accept: application/json" --header "X-Csrf-Token: lCag0CgWAlVzYuTNCinQbbDYqvfo2b6-W1zpvyY52S0="  -d "$i" https://"$DEST_DTR_DOMAIN"/api/v0/accounts
     done
 }
       
