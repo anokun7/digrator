@@ -12,7 +12,7 @@ getAllAccounts() {
 getAllRepos() {
   curl -s --user \
   	"$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
-  	https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories | \
+  	https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories?limit=$SOURCE_NO_OF_REPOS | \
   		jq '.repositories[] | {  (.namespace):(.name) }' | grep -v '[{}]' | sed -e 's/:\s*/\//' -e 's/\s*"\s*//g' 
 }
 
