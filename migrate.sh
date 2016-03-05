@@ -34,7 +34,9 @@ pullImages() {
 createNameSpaces() {
   for i in `getAllAccounts`
     do
-      sed 's/^\s*"\(.*\)":\s*"\(.*\)"/{"type": "\1", "name": "\2" }/' /var/tmp/accounts > /var/tmp/dest_accounts
+      sed -e '/"user":/s/^\s*"\(.*\)":\s*"\(.*\)"/{"type": "\1", "name": "\2", "password": "\2123"}/' \
+          -e '/"organization":/s/^\s*"\(.*\)":\s*"\(.*\)"/{"type": "\1", "name": "\2"}/' \
+          /var/tmp/accounts > /var/tmp/dest_accounts
     done
 
   cat /var/tmp/dest_accounts | sort -u | while IFS= read -r i;
