@@ -27,7 +27,7 @@ pullImages() {
   for i in `getAllTags`
     do
      docker pull $SOURCE_DTR_DOMAIN/$i 
-     docker tag $SOURCE_DTR_DOMAIN/$i $DEST_DTR_DOMAIN/$i ;
+     docker tag $SOURCE_DTR_DOMAIN/$i $DEST_DTR_DOMAIN/$i
    done
 }
 
@@ -66,8 +66,16 @@ createRepos() {
     done
 }
 
+pushImages() {
+  for i in `getAllTags`
+    do
+      docker push $DEST_DTR_DOMAIN/$i
+    done
+}
+
 getAllRepos > /var/tmp/repos
 pullImages
 getAllAccounts > /var/tmp/accounts
 createNameSpaces
 createRepos
+pushImages
