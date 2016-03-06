@@ -9,23 +9,23 @@ source ./migrate.conf
 
 getAllAccounts() {
   curl -s --user \
-  	"$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
-  	https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories?limit=$SOURCE_NO_OF_REPOS | \
-  		jq '.repositories[] | { (.namespaceType):(.namespace)  }' | grep -v '[{}]' | grep -v admin
+    "$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
+    https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories?limit=$SOURCE_NO_OF_REPOS | \
+      jq '.repositories[] | { (.namespaceType):(.namespace)  }' | grep -v '[{}]' | grep -v admin
 }
 
 getAllRepos() {
   curl -s --user \
-  	"$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
-  	https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories?limit=$SOURCE_NO_OF_REPOS | \
-  	  jq '.repositories[] | {  (.namespace):(.name) }' | grep -v '[{}]' | \
-          sed -e 's/:\s*/\//' -e 's/\s*"\s*//g' 
+    "$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
+    https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories?limit=$SOURCE_NO_OF_REPOS | \
+      jq '.repositories[] | {  (.namespace):(.name) }' | grep -v '[{}]' | \
+          sed -e 's/:\s*/\//' -e 's/\s*"\s*//g'
 }
 
 getTagsPerRepo() {
   curl -s --user \
-  	"$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
-  	https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories/${1}/tags | \
+    "$SOURCE_DTR_ADMIN":"$SOURCE_DTR_PASSWORD" --insecure \
+    https://"$SOURCE_DTR_DOMAIN"/api/v0/repositories/${1}/tags | \
           jq '. | { (.name): .tags[].name }' | grep -v '[{}]' | sed 's/[" ]//g'
 }
 
@@ -40,7 +40,7 @@ pullImages() {
   echo "###  Downloading images from https://$SOURCE_DTR_DOMAIN/"
   for i in `getAllTags`
     do
-     docker pull $SOURCE_DTR_DOMAIN/$i 
+     docker pull $SOURCE_DTR_DOMAIN/$i
      docker tag $SOURCE_DTR_DOMAIN/$i $DEST_DTR_DOMAIN/$i
    done
 }
@@ -61,7 +61,7 @@ createNameSpaces() {
          -d "$i" https://"$DEST_DTR_DOMAIN"/api/v0/accounts
     done
 }
-      
+
 createRepos() {
   echo "###  Creating repositories under their corresponding namespaces on https://$DEST_DTR_DOMAIN/"
   cat /var/tmp/repos | sort -u | while IFS= read -r i;
