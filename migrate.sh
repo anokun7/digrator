@@ -57,8 +57,7 @@ createNameSpaces() {
   cat /var/tmp/dest_accounts | sort -u | while IFS= read -r i;
     do
       curl --insecure --user "$DEST_DTR_ADMIN":"$DEST_DTR_PASSWORD" -X POST --header "Content-Type: application/json" \
-         --header "Accept: application/json" --header "X-Csrf-Token: lCag00CgWAlVzYuTNCinQbbDYqvfo2b6-W1zpvyY52S0=" \
-         -d "$i" https://"$DEST_DTR_DOMAIN"/api/v0/accounts
+         --header "Accept: application/json" -d "$i" https://"$DEST_DTR_DOMAIN"/enzi/v0/accounts
     done
 }
 
@@ -72,8 +71,7 @@ createRepos() {
   cat /var/tmp/dest_repos | sort -u | while IFS= read -r i;
     do
       curl --insecure --user "$DEST_DTR_ADMIN":"$DEST_DTR_PASSWORD" -X POST --header "Content-Type: application/json" \
-        --header "Accept: application/json" --header "X-Csrf-Token: jaYLzzlpH1SB0uv217SExOfwK8t-7QdXA6PymflfOOs=" \
-        -d "`echo $i | awk -F/ '{ print $2 }'`" \
+        --header "Accept: application/json" -d "`echo $i | awk -F/ '{ print $2 }'`" \
         "https://"$DEST_DTR_DOMAIN"/api/v0/repositories/`echo $i | awk -F/ '{ print $1 }'`"
     done
 }
